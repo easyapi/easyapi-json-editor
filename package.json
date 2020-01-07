@@ -1,0 +1,59 @@
+{
+  "name": "easyapi-json-editor",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "keywords": [
+    "vue",
+    "json"
+  ],
+  "main": "./src/index.js",
+  "module": "./dist/ea-json-form.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/easyapi/easyapi-json-editor.git"
+  },
+  "homepage": "https://github.com/easyapi/easyapi-json-editor",
+  "bugs": {
+    "url": "hhttps://github.com/easyapi/easyapi-json-editor/issues"
+  },
+  "license": "Apache 2",
+  "scripts": {
+    "dev": "webpack-dev-server --open --config webpack.config.js",
+    "example": "rm -rf ./example/dist/*.js && rm -rf ./example/dist/*.html && webpack --progress --config webpack.config.js",
+    "build": "webpack --progress --config webpack.build.js"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-component": "^1.1.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "css-loader": "^3.4.0",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "resolve-url-loader": "^3.1.1",
+    "style-loader": "^1.1.1",
+    "url-loader": "^3.0.0",
+    "vue-loader": "^15.8.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  },
+  "dependencies": {
+    "element-ui": "^2.13.0",
+    "highlight.js": "^9.17.1",
+    "jquery": "^3.4.1",
+    "jsoneditor": "^8.1.1",
+    "lodash": "^4.17.15",
+    "vue": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
