@@ -4,6 +4,7 @@ import App from './App.vue'
 
 Vue.use(JsonEditor)
 
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

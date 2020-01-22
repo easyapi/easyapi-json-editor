@@ -1,104 +1,206 @@
 <template>
-  <div id="jsoneditor"></div>
+  <json-view 
+    :parsedData="parsedData" 
+    v-model="parsedData"></json-view>
 </template>
 
 <script>
-import JSONEditor from 'jsoneditor'
-import 'jsoneditor/dist/jsoneditor.min.css'
+import JsonView from "./JsonView.vue";
 
 export default {
   name: "JsonEditor",
-  props: ['jsonData', 'commentData'],
-  data: function() {
+  props: {
+    objData: {
+      type: Object,
+      required: true 
+    },
+    options: {
+      type: Object,
+      default: function () {
+        return { 
+          confirmText: "confirm",
+          cancelText: "cancel"
+        }
+      },
+    }
+  },
+  provide () {
     return {
-      selfEditor: null,
-      dataNoteArr: []
+      formBtnText: this.options
     }
   },
-  created() {
+  data () {
+    return {
+      parsedData: []
+    };
   },
-  mounted() {
-    // create the editor
-    const container = document.getElementById("jsoneditor")
-    const options = {
-      search: false,
-      colorPicker: false,
-      sortObjectKeys: false,
-      onChange: this.treeChange
+  created () {
+    this.lastParsedData = {};
+    this.parsedData = this.jsonParse(this.objData);
+  },
+  watch: {
+    objData: {
+      handler(newValue, oldValue) {
+        this.parsedData = this.jsonParse(this.objData);
+      }
+    },
+    parsedData: {
+      handler(newValue, oldValue) {
+        if (JSON.stringify(newValue) === JSON.stringify(this.lastParsedData)) {
+          return;
+        }
+
+        this.lastParsedData = newValue;
+        this.$emit("input", this.makeJson(this.parsedData));
+      },
+      deep: true
     }
-    this.selfEditor = new JSONEditor(container, options)
-
-    // set json
-    const initialJson = 
-    this.selfEditor.set(this.jsonData)
-
-    // get json
-    const updatedJson = this.selfEditor.get()
-
-    this.makeParamsNote()
+  },
+  components: {
+    "json-view": JsonView
   },
   methods: {
-    getJson() {
-      return this.selfEditor.get()
-    },
+    jsonParse: function (jsonStr) {
+      let parseJson = json => {
+        let result = [];
+        let keys = Object.keys(json);
+        keys.forEach((k, index) => {
+          let val = json[k];
+          let parsedVal = val;
 
-    //生成数据注释
-    makeParamsNote() {
-      this.dataNoteArr = [];
-      //生成数据类型
-      const makeDataNote = oj => {
-        oj.forEach(el => {
-          if (el.childParams && el.childParams.length) {
-            this.dataNoteArr.push({
-              name: el.name,
-              remark: el.remark
-            });
-            makeDataNote(el.childParams);
-          } else {
-            this.dataNoteArr.push({
-              name: el.name,
-              remark: el.remark
-            });
+          if (this.getType(val) == "object") {
+            parsedVal = parseJson(val);
+
+          } else if (this.getType(val) == "array") {
+            parsedVal = parseArray(val);
           }
+
+          let opt = {
+            name: k,
+            type: this.getType(val)
+          };
+
+          if (opt.type == "array" || opt.type == "object") {
+            opt.childParams = parsedVal;
+            opt.remark = null;
+          } else {
+            opt.childParams = null;
+            opt.remark = parsedVal;
+          }
+
+          result.push(opt);
         });
+        return result;
       };
-      makeDataNote(this.commentData)
-      this.insertDataNote()
-    },
 
-    treeChange() {
-      console.log(this.getJson())
-    },
+      //
+      let parseArray = arrayObj => {
+        let result = [];
+        for (let i = 0; i < arrayObj.length; ++i) {
+          let val = arrayObj[i];
+          let parsedVal = val;
+          if (this.getType(val) == "object") {
+            parsedVal = parseJson(val);
 
-    insertDataNote() {
-      const trees = document.getElementsByClassName('jsoneditor-tree')[0].getElementsByTagName('tbody')[0].childNodes
-      
-      const trDoms = []
-      for (let i = 0; i < trees.length; i += 1) {
-        if (i !== 0 && i !== trees.length - 1) {
-          trDoms.push(trees[i])
+          } else if (this.getType(val) == "array") {
+            parsedVal = parseArray(val);
+          }
+
+          let opt = {
+            name: null,
+            type: this.getType(val)
+          };
+
+          if (opt.type == "array" || opt.type == "object") {
+            opt.childParams = parsedVal;
+            opt.remark = null;
+          } else {
+            opt.childParams = null;
+            opt.remark = parsedVal;
+          }
+
+          result.push(opt);
         }
+        return result;
+      };
+
+      // --
+      let parseBody = json => {
+        let r = parseJson(json);
+        return r;
+      };
+
+      return parseBody(jsonStr);
+    },
+
+    getType: function (obj) {
+      switch (Object.prototype.toString.call(obj)) {
+        case "[object Array]":
+          return "array";
+          break;
+        case "[object Object]":
+          return "object";
+          break;
+        case "[object Null]":
+        case "[object Function]":
+        case "[object Undefined]":
+          return "string"
+          break;
+        default:
+          return typeof obj;
+          break;
       }
+    },
 
-      trDoms.forEach((el, index) => {
-        let targetDom = el.querySelectorAll('.jsoneditor-tree')
-        targetDom = targetDom[targetDom.length - 1]
+    makeJson: function (dataArr) {
+      let revertWithObj = function(data) {
+        let r = {};
+        for (let i = 0; i < data.length; ++i) {
+          let el = data[i];
+          let key, val;
+          key = el.name;
+          if (el.type == "array") {
+            val = revertWithArray(el.childParams);
+          } else if (el.type == "object") {
+            val = revertWithObj(el.childParams);
+          } else {
+            val = el.remark;
+          }
 
-        const noteDom = document.createElement('div')
-        noteDom.classList.add('jsoneditor-tree')
-        noteDom.innerHTML = `<div class="jsoneditor-value jsoneditor-note">${this.dataNoteArr[index].remark || ''}</div>`
+          r[key] = val;
+        }
+        return r;
+      };
 
-        targetDom.parentElement.append(noteDom)
-      })
+      let revertWithArray = function(data) {
+        let arr = [];
+        for (let i = 0; i < data.length; ++i) {
+          let el = data[i];
+          let r;
+          if (el.type == "array") {
+            r = revertWithArray(el.childParams);
+          } else if (el.type == "object") {
+            r = revertWithObj(el.childParams);
+          } else {
+            r = el.remark;
+          }
 
-      console.log(trDoms)
+          arr.push(r);
+        }
+        return arr;
+      };
+
+      let revertMain = function(data) {
+        let r = revertWithObj(data);
+        return r;
+      };
+
+      return revertMain(dataArr);
     }
   }
 };
 </script>
 
-<style lang="less" scoped>
-
+<style lang="less">
+@import "./assets/styles/common.less";
 </style>
-
-
