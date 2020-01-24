@@ -1,7 +1,5 @@
 <template>
-  <json-view 
-    :parsedData="parsedData" 
-    v-model="parsedData"></json-view>
+  <json-view :parsedData="parsedData" v-model="parsedData"></json-view>
 </template>
 
 <script>
@@ -12,29 +10,29 @@ export default {
   props: {
     objData: {
       type: Object,
-      required: true 
+      required: true
     },
     options: {
       type: Object,
-      default: function () {
-        return { 
+      default: function() {
+        return {
           confirmText: "confirm",
           cancelText: "cancel"
-        }
-      },
+        };
+      }
     }
   },
-  provide () {
+  provide() {
     return {
       formBtnText: this.options
-    }
+    };
   },
-  data () {
+  data() {
     return {
       parsedData: []
     };
   },
-  created () {
+  created() {
     this.lastParsedData = {};
     this.parsedData = this.jsonParse(this.objData);
   },
@@ -60,7 +58,7 @@ export default {
     "json-view": JsonView
   },
   methods: {
-    jsonParse: function (jsonStr) {
+    jsonParse: function(jsonStr) {
       let parseJson = json => {
         let result = [];
         let keys = Object.keys(json);
@@ -70,7 +68,6 @@ export default {
 
           if (this.getType(val) == "object") {
             parsedVal = parseJson(val);
-
           } else if (this.getType(val) == "array") {
             parsedVal = parseArray(val);
           }
@@ -101,7 +98,6 @@ export default {
           let parsedVal = val;
           if (this.getType(val) == "object") {
             parsedVal = parseJson(val);
-
           } else if (this.getType(val) == "array") {
             parsedVal = parseArray(val);
           }
@@ -133,7 +129,7 @@ export default {
       return parseBody(jsonStr);
     },
 
-    getType: function (obj) {
+    getType: function(obj) {
       switch (Object.prototype.toString.call(obj)) {
         case "[object Array]":
           return "array";
@@ -144,7 +140,7 @@ export default {
         case "[object Null]":
         case "[object Function]":
         case "[object Undefined]":
-          return "string"
+          return "string";
           break;
         default:
           return typeof obj;
@@ -152,7 +148,7 @@ export default {
       }
     },
 
-    makeJson: function (dataArr) {
+    makeJson: function(dataArr) {
       let revertWithObj = function(data) {
         let r = {};
         for (let i = 0; i < data.length; ++i) {
@@ -196,6 +192,10 @@ export default {
       };
 
       return revertMain(dataArr);
+    },
+
+    getJSONEditorData: function() {
+      return this.parsedData;
     }
   }
 };
