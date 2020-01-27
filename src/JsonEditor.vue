@@ -1,5 +1,7 @@
 <template>
-  <json-view :parsedData="parsedData" v-model="parsedData"></json-view>
+  <div class="ea-json-editor">
+    <json-view :parsedData="parsedData" v-model="parsedData"></json-view>
+  </div>
 </template>
 
 <script>
@@ -34,22 +36,23 @@ export default {
   },
   created() {
     this.lastParsedData = {};
-    this.parsedData = this.jsonParse(this.objData);
+    // this.parsedData = this.jsonParse(this.objData);
+    // this.parsedData = this.objData;
+    this.parsedData = [...[this.objData]];
   },
   watch: {
-    objData: {
-      handler(newValue, oldValue) {
-        this.parsedData = this.jsonParse(this.objData);
-      }
-    },
+    // objData: {
+    //   handler(newValue, oldValue) {
+    //     this.parsedData = [...[this.objData]];
+    //   }
+    // },
     parsedData: {
       handler(newValue, oldValue) {
         if (JSON.stringify(newValue) === JSON.stringify(this.lastParsedData)) {
           return;
         }
-
         this.lastParsedData = newValue;
-        this.$emit("input", this.makeJson(this.parsedData));
+        this.$emit("input", this.parsedData);
       },
       deep: true
     }
@@ -59,7 +62,7 @@ export default {
   },
   methods: {
     jsonParse: function(jsonStr) {
-      let parseJson = json => {
+      const parseJson = json => {
         let result = [];
         let keys = Object.keys(json);
         keys.forEach((k, index) => {
@@ -78,11 +81,11 @@ export default {
           };
 
           if (opt.type == "array" || opt.type == "object") {
-            opt.childParams = parsedVal;
-            opt.remark = null;
+            opt.childs = parsedVal;
+            opt.sample = null;
           } else {
-            opt.childParams = null;
-            opt.remark = parsedVal;
+            opt.childs = null;
+            opt.sample = parsedVal;
           }
 
           result.push(opt);
@@ -91,8 +94,8 @@ export default {
       };
 
       //
-      let parseArray = arrayObj => {
-        let result = [];
+      const parseArray = arrayObj => {
+        const result = [];
         for (let i = 0; i < arrayObj.length; ++i) {
           let val = arrayObj[i];
           let parsedVal = val;
@@ -108,11 +111,11 @@ export default {
           };
 
           if (opt.type == "array" || opt.type == "object") {
-            opt.childParams = parsedVal;
-            opt.remark = null;
+            opt.childs = parsedVal;
+            opt.sample = null;
           } else {
-            opt.childParams = null;
-            opt.remark = parsedVal;
+            opt.childs = null;
+            opt.sample = parsedVal;
           }
 
           result.push(opt);
@@ -121,9 +124,8 @@ export default {
       };
 
       // --
-      let parseBody = json => {
-        let r = parseJson(json);
-        return r;
+      const parseBody = json => {
+        return parseJson(json);
       };
 
       return parseBody(jsonStr);
@@ -149,18 +151,18 @@ export default {
     },
 
     makeJson: function(dataArr) {
-      let revertWithObj = function(data) {
+      const revertWithObj = function(data) {
         let r = {};
         for (let i = 0; i < data.length; ++i) {
           let el = data[i];
           let key, val;
           key = el.name;
           if (el.type == "array") {
-            val = revertWithArray(el.childParams);
+            val = revertWithArray(el.childs);
           } else if (el.type == "object") {
-            val = revertWithObj(el.childParams);
+            val = revertWithObj(el.childs);
           } else {
-            val = el.remark;
+            val = el.sample;
           }
 
           r[key] = val;
@@ -168,17 +170,17 @@ export default {
         return r;
       };
 
-      let revertWithArray = function(data) {
+      const revertWithArray = function(data) {
         let arr = [];
         for (let i = 0; i < data.length; ++i) {
           let el = data[i];
           let r;
           if (el.type == "array") {
-            r = revertWithArray(el.childParams);
+            r = revertWithArray(el.childs);
           } else if (el.type == "object") {
-            r = revertWithObj(el.childParams);
+            r = revertWithObj(el.childs);
           } else {
-            r = el.remark;
+            r = el.sample;
           }
 
           arr.push(r);
@@ -186,7 +188,7 @@ export default {
         return arr;
       };
 
-      let revertMain = function(data) {
+      const revertMain = function(data) {
         let r = revertWithObj(data);
         return r;
       };
@@ -196,6 +198,10 @@ export default {
 
     getJSONEditorData: function() {
       return this.parsedData;
+    },
+
+    exportJSON: function() {
+      return this.makeJson(this.parsedData);
     }
   }
 };

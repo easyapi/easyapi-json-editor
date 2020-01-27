@@ -19,36 +19,43 @@
             v-if="item.type == 'object' || item.type == 'array'"
             @click="closeBlock(index, $event)"
           ></i>
-          <i v-if="item.type == 'object'" class="i-type">{{'{' + item.childParams.length + '}'}}</i>
-          <i v-if="item.type == 'array'" class="i-type">{{'[' + item.childParams.length + ']'}}</i>
+          <i v-if="item.type == 'object'" class="i-type">{{'{' + item.childs.length + '}'}}</i>
+          <i v-if="item.type == 'array'" class="i-type">{{'[' + item.childs.length + ']'}}</i>
+          <input
+            type="text"
+            v-model="item.description"
+            v-if="item.childs"
+            class="des-input"
+            placeholder="注释"
+          />
         </span>
         <span class="json-val">
           <template v-if="item.type == 'object'">
-            <json-view :parsedData="item.childParams" v-model="item.childParams"></json-view>
+            <json-view :parsedData="item.childs" v-model="item.childs"></json-view>
           </template>
 
           <template v-else-if="item.type == 'array'">
-            <array-view :parsedData="item.childParams" v-model="item.childParams"></array-view>
+            <array-view :parsedData="item.childs" v-model="item.childs"></array-view>
           </template>
 
           <template v-else>
             <span class="val">
               <input
                 type="text"
-                v-model="item.remark"
+                v-model="item.sample"
                 class="val-input"
                 v-if="item.type == 'string'"
               />
               <input
                 type="number"
-                v-model.number="item.remark"
+                v-model.number="item.sample"
                 class="val-input"
                 v-if="item.type == 'number'"
                 @input="numberInputChange(member)"
               />
               <select
                 name="value"
-                v-model="item.remark"
+                v-model="item.sample"
                 class="val-input"
                 v-if="item.type == 'boolean'"
               >
@@ -56,6 +63,7 @@
                 <option :value="false">false</option>
               </select>
             </span>
+            <input type="text" v-model="item.description" class="des-input" placeholder="注释" />
           </template>
         </span>
 
@@ -133,14 +141,16 @@ export default {
     newItem: function(obj) {
       let oj = {
         name: obj.key,
-        type: obj.type
+        type: obj.type,
+        description: "",
+        sample: ""
       };
       if (obj.type == "array" || obj.type == "object") {
-        oj.childParams = obj.val;
-        oj.remark = null;
+        oj.childs = obj.val;
+        oj.sample = null;
       } else {
-        oj.childParams = null;
-        oj.remark = obj.val;
+        oj.childs = null;
+        oj.sample = obj.val;
       }
 
       if (!oj.name) {
@@ -167,19 +177,22 @@ export default {
 
     itemTypeChange: function(item) {
       if (item.type === "array" || item.type === "object") {
-        item.childParams = [];
-        item.remark = null;
+        item.childs = [];
+        item.sample = null;
       }
       if (item.type === "boolean") {
-        item.remark = true;
+        item.sample = true;
+      }
+      if (item.type === "string") {
+        item.sample = "";
       }
       if (item.type === "number") {
-        item.remark = 0;
+        item.sample = 0;
       }
     },
 
     numberInputChange: function(item) {
-      if (!item.remark) item.remark = 0;
+      if (!item.sample) item.sample = 0;
     }
   }
 };

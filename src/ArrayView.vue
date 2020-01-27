@@ -10,14 +10,14 @@
           <p v-if="member.type !== 'object' && member.type !== 'array'">
             <input
               type="text"
-              v-model="member.remark"
+              v-model="member.sample"
               class="val-input"
               v-if="member.type === 'string'"
               placeholder="string"
             />
             <input
               type="number"
-              v-model.number="member.remark"
+              v-model.number="member.sample"
               class="val-input"
               v-if="member.type == 'number'"
               placeholder="number"
@@ -25,14 +25,16 @@
             />
             <select
               name="value"
-              v-model="member.remark"
+              v-model="member.sample"
               class="val-input"
               v-if="member.type == 'boolean'"
             >
               <option :value="true">true</option>
               <option :value="false">false</option>
             </select>
+            <input type="text" v-model="member.description" class="des-input" placeholder="注释" />
           </p>
+
           <div v-else>
             <span :class="['json-key', 'json-desc']">
               {{member.type.toUpperCase()}}
@@ -41,17 +43,17 @@
                 v-if="member.type == 'object' || member.type == 'array'"
                 @click="closeBlock(index, $event)"
               ></i>
-              <i v-if="member.type == 'object'">{{'{' + member.childParams.length + '}'}}</i>
-              <i v-if="member.type == 'array'">{{'[' + member.childParams.length + ']'}}</i>
+              <i v-if="member.type == 'object'">{{'{' + member.childs.length + '}'}}</i>
+              <i v-if="member.type == 'array'">{{'[' + member.childs.length + ']'}}</i>
             </span>
 
             <span class="json-val">
               <template v-if="member.type == 'array'">
-                <array-view :parsedData="member.childParams || []" v-model="member.childParams"></array-view>
+                <array-view :parsedData="member.childs || []" v-model="member.childs"></array-view>
               </template>
 
               <template v-if="member.type == 'object'">
-                <json-view :parsedData="member.childParams || {}" v-model="member.childParams"></json-view>
+                <json-view :parsedData="member.childs || {}" v-model="member.childs"></json-view>
               </template>
             </span>
           </div>
@@ -126,14 +128,16 @@ export default {
 
       let oj = {
         name: obj.key,
-        type: obj.type
+        type: obj.type,
+        description: "",
+        sample: ""
       };
       if (obj.type == "array" || obj.type == "object") {
-        oj.childParams = obj.val;
-        oj.remark = null;
+        oj.childs = obj.val;
+        oj.sample = null;
       } else {
-        oj.childParams = null;
-        oj.remark = obj.val;
+        oj.childs = null;
+        oj.sample = obj.val;
       }
 
       this.flowData.push(oj);
@@ -147,19 +151,22 @@ export default {
 
     itemTypeChange: function(item) {
       if (item.type === "array" || item.type === "object") {
-        item.childParams = [];
-        item.remark = null;
+        item.childs = [];
+        item.sample = null;
       }
       if (item.type === "boolean") {
-        item.remark = true;
+        item.sample = true;
+      }
+      if (item.type === "string") {
+        item.sample = "";
       }
       if (item.type === "number") {
-        item.remark = 0;
+        item.sample = 0;
       }
     },
 
     numberInputChange: function(item) {
-      if (!item.remark) item.remark = 0;
+      if (!item.sample) item.sample = 0;
     }
   }
 };
