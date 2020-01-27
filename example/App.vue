@@ -16,6 +16,7 @@
           <div class="tools-btn pure-form">
             <button class="pure-button" @click="getJSONEditorData">getJSONEditorData</button>
             <button class="pure-button" @click="exportJSON">exportJSON</button>
+            <button class="pure-button" @click="importJSON">importJSON</button>
           </div>
         </div>
       </div>
@@ -149,6 +150,17 @@ export default {
 
     exportJSON: function() {
       console.log(this.$refs.jsonEditor.exportJSON());
+    },
+
+    importJSON: function() {
+      this.$refs.jsonEditor.importJSON({
+        aaa: 123,
+        bbb: {
+          ccc: 32,
+          ddd: 45,
+          fff: [123, 4556, 67]
+        }
+      });
     }
   },
   mounted: function() {

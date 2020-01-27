@@ -202,6 +202,10 @@ export default {
 
     exportJSON: function() {
       return this.makeJson(this.parsedData);
+    },
+
+    importJSON: function(json) {
+      this.parsedData = this.jsonParse(json);
     }
   }
 };

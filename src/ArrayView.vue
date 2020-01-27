@@ -155,12 +155,15 @@ export default {
         item.sample = null;
       }
       if (item.type === "boolean") {
+        item.childs = null;
         item.sample = true;
       }
       if (item.type === "string") {
+        item.childs = null;
         item.sample = "";
       }
       if (item.type === "number") {
+        item.childs = null;
         item.sample = 0;
       }
     },
