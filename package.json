@@ -1,12 +1,14 @@
 {
-  "name": "ea-json-edit",
-  "version": "1.4.2",
+  "name": "easyapi-json-editor",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
   "keywords": [
     "vue",
     "json"
   ],
   "main": "./src/index.js",
-  "module": "./dist/vue-json-edit.js",
+  "module": "./dist/easyapi-json-editor.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/easyapi/easyapi-json-editor.git"
@@ -23,26 +25,26 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
+    "babel-loader": "^8.0.6",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "css-loader": "^2.1.0",
+    "css-loader": "^3.4.2",
     "html-webpack-plugin": "^3.2.0",
-    "less": "^3.9.0",
-    "less-loader": "^4.1.0",
-    "resolve-url-loader": "^3.0.1",
-    "style-loader": "^0.23.1",
-    "url-loader": "^1.1.2",
-    "vue-loader": "^15.7.0",
-    "vue-template-compiler": "^2.6.8",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1"
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "resolve-url-loader": "^3.1.1",
+    "style-loader": "^1.1.3",
+    "url-loader": "^3.0.0",
+    "vue-loader": "^15.8.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   },
   "dependencies": {
-    "highlight.js": "^9.15.6",
-    "vue": "^2.6.8",
+    "highlight.js": "^9.18.0",
+    "vue": "^2.6.11",
     "vuedraggable": "^2.23.2"
   },
   "browserslist": [

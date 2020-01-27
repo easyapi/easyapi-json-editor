@@ -12,8 +12,8 @@ config.optimization = {
 
 config.output = {
   path: path.resolve(__dirname, './dist'),
-  filename: 'vue-json-edit.js',
-  library: 'vue-json-edit',
+  filename: 'easyapi-json-editor.js',
+  library: 'easyapi-json-editor',
   libraryTarget: 'umd',
 };
 config.externals = {
