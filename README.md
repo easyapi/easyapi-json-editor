@@ -58,3 +58,22 @@ _3、exportJSON 导出标准 JSON 数据_
 _数据类型（字段类型）_
 
 > string, number, boolean, integer, float, double, object, array
+
+## 目录结构
+
+```
+├── dist                      打包后产物
+├── example                   运行用例
+├── src                       源码
+│   ├── ArrayView.vue         数组模块
+│   ├── ItemAddForm.vue       新建输入框
+│   ├── JsonEditor.vue        JSON编辑外层
+│   ├── JsonView.vue          object模块
+│   ├── assets                资源
+│   │   ├── font              字体
+│   │   └── styles            样式
+│   └── index.js
+├── webpack.base.js           webpack配置基础
+├── webpack.build.js          webpack配置prod
+└── webpack.config.js         webpack配置dev
+```
