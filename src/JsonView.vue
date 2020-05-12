@@ -63,7 +63,7 @@
                 <option :value="false">false</option>
               </select>
             </span>
-            <input type="text" v-model="item.description" class="des-input" placeholder="注释" />
+            <input type="text" v-model="item.description" class="des-input" placeholder="注释"/>
           </template>
         </span>
 
@@ -88,115 +88,115 @@
 </template>
 
 <script>
-import ItemAddForm from "./ItemAddForm.vue";
+  import ItemAddForm from "./ItemAddForm.vue";
 
-export default {
-  name: "JsonView",
-  props: { parsedData: {} },
-  data() {
-    return {
-      formats: ["string", "array", "object", "number", "boolean"],
-      flowData: this.parsedData,
-      toAddItem: false,
-      hideMyBlock: {}
-    };
-  },
-  created() {
-    this.flowData = this.parsedData || {};
-  },
-  watch: {
-    parsedData: {
-      handler(newValue, oldValue) {
-        this.flowData = this.parsedData;
-      }
-    }
-  },
-  components: {
-    "item-add-form": ItemAddForm,
-    "array-view": () => import("./ArrayView.vue")
-  },
-  methods: {
-    delItem: function(parentDom, item, index) {
-      this.flowData.splice(index, 1);
-      if (this.hideMyBlock[index]) this.hideMyBlock[index] = false;
-      this.$emit("input", this.flowData);
-    },
-
-    closeBlock: function(index, e) {
-      this.$set(
-        this.hideMyBlock,
-        index,
-        this.hideMyBlock[index] ? false : true
-      );
-    },
-
-    addItem: function() {
-      this.toAddItem = true;
-    },
-
-    cancelNewItem: function() {
-      this.toAddItem = false;
-    },
-
-    newItem: function(obj) {
-      let oj = {
-        name: obj.key,
-        type: obj.type,
-        description: "",
-        sample: ""
+  export default {
+    name: "JsonView",
+    props: {parsedData: {}},
+    data() {
+      return {
+        formats: ["string", "array", "object", "number", "boolean"],
+        flowData: this.parsedData,
+        toAddItem: false,
+        hideMyBlock: {}
       };
-      if (obj.type == "array" || obj.type == "object") {
-        oj.childs = obj.val;
-        oj.sample = null;
-      } else {
-        oj.childs = null;
-        oj.sample = obj.val;
+    },
+    created() {
+      this.flowData = this.parsedData || {};
+    },
+    watch: {
+      parsedData: {
+        handler(newValue, oldValue) {
+          this.flowData = this.parsedData;
+        }
       }
-
-      if (!oj.name) {
-        alert("please must input a name!");
-        return;
-      } else {
-        this.flowData.push(oj);
+    },
+    components: {
+      "item-add-form": ItemAddForm,
+      "array-view": () => import("./ArrayView.vue")
+    },
+    methods: {
+      delItem: function (parentDom, item, index) {
+        this.flowData.splice(index, 1);
+        if (this.hideMyBlock[index]) this.hideMyBlock[index] = false;
         this.$emit("input", this.flowData);
-        this.cancelNewItem();
-      }
-    },
+      },
 
-    keyInputBlur: function(item, e) {
-      if (item.name.length <= 0) {
-        alert("please must input a name!");
-        item.name = "null";
-        e.target.focus();
-      }
-    },
+      closeBlock: function (index, e) {
+        this.$set(
+          this.hideMyBlock,
+          index,
+          this.hideMyBlock[index] ? false : true
+        );
+      },
 
-    onDragEnd: function() {
-      this.$emit("input", this.flowData);
-    },
+      addItem: function () {
+        this.toAddItem = true;
+      },
 
-    itemTypeChange: function(item) {
-      if (item.type === "array" || item.type === "object") {
-        item.childs = [];
-        item.sample = null;
-      }
-      if (item.type === "boolean") {
-        item.childs = null;
-        item.sample = true;
-      }
-      if (item.type === "string") {
-        item.childs = null;
-        item.sample = "";
-      }
-      if (item.type === "number") {
-        item.childs = null;
-        item.sample = 0;
-      }
-    },
+      cancelNewItem: function () {
+        this.toAddItem = false;
+      },
 
-    numberInputChange: function(item) {
-      if (!item.sample) item.sample = 0;
+      newItem: function (obj) {
+        let oj = {
+          name: obj.key,
+          type: obj.type,
+          description: "",
+          sample: ""
+        };
+        if (obj.type == "array" || obj.type == "object") {
+          oj.childs = obj.val;
+          oj.sample = null;
+        } else {
+          oj.childs = null;
+          oj.sample = obj.val;
+        }
+
+        if (!oj.name) {
+          alert("please must input a name!");
+          return;
+        } else {
+          this.flowData.push(oj);
+          this.$emit("input", this.flowData);
+          this.cancelNewItem();
+        }
+      },
+
+      keyInputBlur: function (item, e) {
+        if (item.name.length <= 0) {
+          alert("please must input a name!");
+          item.name = "null";
+          e.target.focus();
+        }
+      },
+
+      onDragEnd: function () {
+        this.$emit("input", this.flowData);
+      },
+
+      itemTypeChange: function (item) {
+        if (item.type === "array" || item.type === "object") {
+          item.childs = [];
+          item.sample = null;
+        }
+        if (item.type === "boolean") {
+          item.childs = null;
+          item.sample = true;
+        }
+        if (item.type === "string") {
+          item.childs = null;
+          item.sample = "";
+        }
+        if (item.type === "number") {
+          item.childs = null;
+          item.sample = 0;
+        }
+      },
+
+      numberInputChange: function (item) {
+        if (!item.sample) item.sample = 0;
+      }
     }
-  }
-};
+  };
 </script>
