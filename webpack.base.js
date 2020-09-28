@@ -9,15 +9,14 @@ config.module = {
       loader: 'vue-loader',
     },
     {
-      test: /\.js$/,
-      loader: 'babel-loader',
-      exclude: file => (
-        /node_modules/.test(file) &&
-        !/\.vue\.js/.test(file)
-      ),
-      query: {
-        presets: ['es2015', 'stage-2'],
-        plugins: ['transform-runtime']
+      test: /\.m?js$/,
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-proposal-object-rest-spread']
+        }
       }
     },
     {
