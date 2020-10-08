@@ -32,7 +32,7 @@
               <option :value="true">true</option>
               <option :value="false">false</option>
             </select>
-            <input type="text" v-model="member.description" class="des-input" placeholder="注释" />
+            <input type="text" v-model="member.description" class="des-input" placeholder="注释"/>
           </p>
 
           <div v-else>
@@ -80,97 +80,97 @@
 </template>
 
 <script>
-import ItemAddForm from "./ItemAddForm.vue";
+  import ItemAddForm from "./ItemAddForm.vue";
 
-export default {
-  name: "ArrayView",
-  props: ["parsedData"],
-  data: function() {
-    return {
-      formats: ["string", "array", "object", "number", "boolean"],
-      flowData: this.parsedData,
-      toAddItem: false,
-      hideMyItem: {}
-    };
-  },
-  watch: {
-    parsedData: {
-      handler(newValue, oldValue) {
-        this.flowData = this.parsedData || [];
-      }
-    }
-  },
-  components: {
-    "item-add-form": ItemAddForm,
-    "json-view": () => import("./JsonView.vue")
-  },
-  methods: {
-    delItem: function(parentDom, item, index) {
-      this.flowData.splice(index, 1);
-      if (this.hideMyItem[index]) this.hideMyItem[index] = false;
-      this.$emit("input", this.flowData);
-    },
-
-    addItem: function() {
-      this.toAddItem = true;
-    },
-
-    cancelNewItem: function() {
-      this.toAddItem = false;
-    },
-
-    closeBlock: function(index, e) {
-      this.$set(this.hideMyItem, index, this.hideMyItem[index] ? false : true);
-    },
-
-    newItem: function(obj) {
-      this.toAddItem = false;
-
-      let oj = {
-        name: obj.key,
-        type: obj.type,
-        description: "",
-        sample: ""
+  export default {
+    name: "ArrayView",
+    props: ["parsedData"],
+    data: function () {
+      return {
+        formats: ["string", "array", "object", "number", "boolean"],
+        flowData: this.parsedData,
+        toAddItem: false,
+        hideMyItem: {}
       };
-      if (obj.type == "array" || obj.type == "object") {
-        oj.childs = obj.val;
-        oj.sample = null;
-      } else {
-        oj.childs = null;
-        oj.sample = obj.val;
-      }
-
-      this.flowData.push(oj);
-      this.$emit("input", this.flowData);
-      this.cancelNewItem();
     },
-
-    onDragEnd: function() {
-      this.$emit("input", this.flowData);
-    },
-
-    itemTypeChange: function(item) {
-      if (item.type === "array" || item.type === "object") {
-        item.childs = [];
-        item.sample = null;
-      }
-      if (item.type === "boolean") {
-        item.childs = null;
-        item.sample = true;
-      }
-      if (item.type === "string") {
-        item.childs = null;
-        item.sample = "";
-      }
-      if (item.type === "number") {
-        item.childs = null;
-        item.sample = 0;
+    watch: {
+      parsedData: {
+        handler(newValue, oldValue) {
+          this.flowData = this.parsedData || [];
+        }
       }
     },
+    components: {
+      "item-add-form": ItemAddForm,
+      "json-view": () => import("./JsonView.vue")
+    },
+    methods: {
+      delItem: function (parentDom, item, index) {
+        this.flowData.splice(index, 1);
+        if (this.hideMyItem[index]) this.hideMyItem[index] = false;
+        this.$emit("input", this.flowData);
+      },
 
-    numberInputChange: function(item) {
-      if (!item.sample) item.sample = 0;
+      addItem: function () {
+        this.toAddItem = true;
+      },
+
+      cancelNewItem: function () {
+        this.toAddItem = false;
+      },
+
+      closeBlock: function (index, e) {
+        this.$set(this.hideMyItem, index, this.hideMyItem[index] ? false : true);
+      },
+
+      newItem: function (obj) {
+        this.toAddItem = false;
+
+        let oj = {
+          name: obj.key,
+          type: obj.type,
+          description: "",
+          sample: ""
+        };
+        if (obj.type == "array" || obj.type == "object") {
+          oj.childs = obj.val;
+          oj.sample = null;
+        } else {
+          oj.childs = null;
+          oj.sample = obj.val;
+        }
+
+        this.flowData.push(oj);
+        this.$emit("input", this.flowData);
+        this.cancelNewItem();
+      },
+
+      onDragEnd: function () {
+        this.$emit("input", this.flowData);
+      },
+
+      itemTypeChange: function (item) {
+        if (item.type === "array" || item.type === "object") {
+          item.childs = [];
+          item.sample = null;
+        }
+        if (item.type === "boolean") {
+          item.childs = null;
+          item.sample = true;
+        }
+        if (item.type === "string") {
+          item.childs = null;
+          item.sample = "";
+        }
+        if (item.type === "number") {
+          item.childs = null;
+          item.sample = 0;
+        }
+      },
+
+      numberInputChange: function (item) {
+        if (!item.sample) item.sample = 0;
+      }
     }
-  }
-};
+  };
 </script>
