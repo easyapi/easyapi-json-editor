@@ -24,7 +24,7 @@
     "build": "webpack --progress --config webpack.build.js"
   },
   "dependencies": {
-    "highlight.js": "^10.2.1",
+    "highlight.js": "^10.1.2",
     "vue": "^2.6.12",
     "vuedraggable": "^2.24.1"
   },
