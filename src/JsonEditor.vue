@@ -37,15 +37,15 @@ export default {
   created() {
     this.lastParsedData = {};
     // this.parsedData = this.jsonParse(this.objData);
-    // this.parsedData = this.objData;
-    this.parsedData = [...[this.objData]];
+    this.parsedData = this.objData;
+    // this.parsedData = this.jsonParse(this.objData);
   },
   watch: {
-    // objData: {
-    //   handler(newValue, oldValue) {
-    //     this.parsedData = [...[this.objData]];
-    //   }
-    // },
+    objData: {
+      handler(newValue, oldValue) {
+        this.parsedData = this.jsonParse(this.objData)
+      },
+    },
     parsedData: {
       handler(newValue, oldValue) {
         if (JSON.stringify(newValue) === JSON.stringify(this.lastParsedData)) {

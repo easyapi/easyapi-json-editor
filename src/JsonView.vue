@@ -92,7 +92,9 @@
 
   export default {
     name: "JsonView",
-    props: {parsedData: {}},
+    props: {
+      parsedData: {}
+    },
     data() {
       return {
         formats: ["string", "array", "object", "number", "boolean"],

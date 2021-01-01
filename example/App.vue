@@ -10,7 +10,7 @@
 							cancelText: 'cancel',
 						}"
             :objData="jsonData"
-            v-model="jsonData"
+            v-model="newJsonData"
             ref="jsonEditor"
           ></JsonEditor>
           <div class="tools-btn pure-form">
@@ -41,25 +41,26 @@
     data: function () {
       return {
         jsonData: {
-          name: "blog",
-          type: "object",
-          description: "博客",
-          sample: "",
-          sequence: 1,
-          childs: [
-            {
-              name: "title",
-              type: "string",
-              description: "标题",
-              sample: "我和我的祖国",
-              sequence: 1
-            }
-          ]
-        }
+          // name: "",
+          // type: "object",
+          // description: "博客",
+          // sample: "",
+          // sequence: 1,
+          // childs: [
+          //   {
+          //     name: "title",
+          //     type: "string",
+          //     description: "标题",
+          //     sample: "我和我的祖国",
+          //     sequence: 1
+          //   }
+          // ]
+        },
+        newJsonData: {}
       };
     },
     watch: {
-      jsonData: {
+      newJsonData: {
         handler(newValue, oldValue) {
           const c = this.formatJson(
             JSON.stringify(this.$refs.jsonEditor.exportJSON())
