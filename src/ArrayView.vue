@@ -120,7 +120,7 @@
       },
 
       closeBlock: function (index, e) {
-        this.$set(this.hideMyItem, index, this.hideMyItem[index] ? false : true);
+        this.$set(this.hideMyItem, index, !this.hideMyItem[index]);
       },
 
       newItem: function (obj) {
@@ -132,7 +132,7 @@
           description: "",
           sample: ""
         };
-        if (obj.type == "array" || obj.type == "object") {
+        if (obj.type === "array" || obj.type === "object") {
           oj.childs = obj.val;
           oj.sample = null;
         } else {

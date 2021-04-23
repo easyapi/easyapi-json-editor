@@ -4,23 +4,23 @@
       <div
         v-for="(item, index) in flowData"
         :key="`${item.type}${index}`"
-        :class="['block', 'clearfix', {'hide-block': hideMyBlock[index] == true}]"
+        :class="['block', 'clearfix', {'hide-block': hideMyBlock[index] === true}]"
       >
         <span class="json-key">
           <input
             type="text"
             v-model="item.name"
             class="key-input"
-            v-if="typeof item.name == 'string'"
+            v-if="typeof item.name === 'string'"
             @blur="keyInputBlur(item, $event)"
           />
           <i
             class="collapse-down v-json-edit-icon-arrow_drop_down"
-            v-if="item.type == 'object' || item.type == 'array'"
+            v-if="item.type === 'object' || item.type === 'array'"
             @click="closeBlock(index, $event)"
           ></i>
-          <i v-if="item.type == 'object'" class="i-type">{{'{' + item.childs.length + '}'}}</i>
-          <i v-if="item.type == 'array'" class="i-type">{{'[' + item.childs.length + ']'}}</i>
+          <i v-if="item.type === 'object'" class="i-type">{{'{' + item.childs.length + '}'}}</i>
+          <i v-if="item.type === 'array'" class="i-type">{{'[' + item.childs.length + ']'}}</i>
           <input
             type="text"
             v-model="item.description"
@@ -30,11 +30,11 @@
           />
         </span>
         <span class="json-val">
-          <template v-if="item.type == 'object'">
+          <template v-if="item.type === 'object'">
             <json-view :parsedData="item.childs" v-model="item.childs"></json-view>
           </template>
 
-          <template v-else-if="item.type == 'array'">
+          <template v-else-if="item.type === 'array'">
             <array-view :parsedData="item.childs" v-model="item.childs"></array-view>
           </template>
 
@@ -44,20 +44,20 @@
                 type="text"
                 v-model="item.sample"
                 class="val-input"
-                v-if="item.type == 'string'"
+                v-if="item.type === 'string'"
               />
               <input
                 type="number"
                 v-model.number="item.sample"
                 class="val-input"
-                v-if="item.type == 'number'"
+                v-if="item.type === 'number'"
                 @input="numberInputChange(member)"
               />
               <select
                 name="value"
                 v-model="item.sample"
                 class="val-input"
-                v-if="item.type == 'boolean'"
+                v-if="item.type === 'boolean'"
               >
                 <option :value="true">true</option>
                 <option :value="false">false</option>
@@ -128,7 +128,7 @@
         this.$set(
           this.hideMyBlock,
           index,
-          this.hideMyBlock[index] ? false : true
+          !this.hideMyBlock[index]
         );
       },
 
@@ -147,7 +147,7 @@
           description: "",
           sample: ""
         };
-        if (obj.type == "array" || obj.type == "object") {
+        if (obj.type === "array" || obj.type === "object") {
           oj.childs = obj.val;
           oj.sample = null;
         } else {
@@ -158,11 +158,10 @@
         if (!oj.name) {
           alert("please must input a name!");
           return;
-        } else {
-          this.flowData.push(oj);
-          this.$emit("input", this.flowData);
-          this.cancelNewItem();
         }
+        this.flowData.push(oj);
+        this.$emit("input", this.flowData);
+        this.cancelNewItem();
       },
 
       keyInputBlur: function (item, e) {
