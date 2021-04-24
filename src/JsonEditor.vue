@@ -36,9 +36,11 @@
     },
     created() {
       this.lastParsedData = {};
-      // this.parsedData = this.jsonParse(this.objData);
       this.parsedData = this.objData;
-      // this.parsedData = this.jsonParse(this.objData);
+
+      if (!this.parsedData.length) {
+        this.importJSON({});
+      }
     },
     watch: {
       objData: {
