@@ -4,15 +4,15 @@
     <div class="editor-w clearfix">
       <div class="w-2">
         <div class="editor">
-          <JsonEditor
+          <easyapi-json-editor
             :options="{
-							confirmText: 'confirm',
-							cancelText: 'cancel',
+							confirmText: '确定',
+							cancelText: '取消',
 						}"
             :objData="jsonData"
             v-model="newJsonData"
             ref="jsonEditor"
-          ></JsonEditor>
+          ></easyapi-json-editor>
           <div class="tools-btn pure-form">
             <button class="pure-button" @click="getJSONEditorData">getJSONEditorData</button>
             <button class="pure-button" @click="exportJSON">exportJSON</button>
@@ -41,20 +41,20 @@
     data: function () {
       return {
         jsonData: {
-          // name: "",
-          // type: "object",
-          // description: "博客",
-          // sample: "",
-          // sequence: 1,
-          // childs: [
-          //   {
-          //     name: "title",
-          //     type: "string",
-          //     description: "标题",
-          //     sample: "我和我的祖国",
-          //     sequence: 1
-          //   }
-          // ]
+          name: "",
+          type: "object",
+          description: "博客",
+          sample: "",
+          sequence: 1,
+          childs: [
+            {
+              name: "title",
+              type: "string",
+              description: "标题",
+              sample: "我和我的祖国",
+              sequence: 1
+            }
+          ]
         },
         newJsonData: {}
       };

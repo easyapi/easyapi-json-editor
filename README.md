@@ -57,7 +57,113 @@ _3、exportJSON 导出标准 JSON 数据_
 
 _数据类型（字段类型）_
 
+## Example
+
+```
+<template>
+  <easyapi-json-form :jsonData="jsonData" v-model="jsonData"></easyapi-json-form>
+</template>
+
+<script>
+export default {
+  name: "app",
+  data: function() {
+    return {
+      jsonData: [
+        {
+          id: 1,
+          name: "blog",
+          type: "object",
+          description: "博客",
+          required: false,
+          sample: "",
+          demo: "",
+          sequence: 1,
+          childs: [
+            {
+              id: 10,
+              name: "title",
+              type: "string",
+              description: "标题",
+              required: true,
+              sample: "我和我的祖国",
+              demo: "",
+              sequence: 1,
+              childs: [
+                {
+                  id: 110,
+                  name: "title",
+                  type: "string",
+                  description: "标题",
+                  required: true,
+                  sample: "我和我的祖国",
+                  demo: "",
+                  sequence: 1,
+                  childs: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: "title",
+          type: "string",
+          description: "标题",
+          required: true,
+          sample: "我和我的祖国",
+          demo: "",
+          sequence: 1,
+          childs: []
+        }
+      ]
+    };
+  },
+  mounted: function() {}
+};
+</script>
+
+```
+
 > string, number, boolean, integer, float, double, object, array
+
+
+## Example
+
+```
+<template>
+  <easyapi-json-editor :jsonData="jsonData" v-model="jsonData"></easyapi-json-editor>
+</template>
+
+<script>
+export default {
+  name: "app",
+  data: function() {
+    return {
+      jsonData: {
+        name: "",
+        type: "object",
+        description: "博客",
+        sample: "",
+        sequence: 1,
+        childs: [
+          {
+            name: "title",
+            type: "string",
+            description: "标题",
+            sample: "我和我的祖国",
+            sequence: 1
+          }
+        ]
+      },
+      newJsonData: {}
+    };
+  },
+  mounted: function() {}
+};
+</script>
+
+```
 
 ## 目录结构
 

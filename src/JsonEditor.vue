@@ -18,8 +18,8 @@
         type: Object,
         default: function () {
           return {
-            confirmText: "confirm",
-            cancelText: "cancel"
+            confirmText: "确定",
+            cancelText: "取消"
           };
         }
       }
@@ -37,7 +37,6 @@
     created() {
       this.lastParsedData = {};
       this.parsedData = this.objData;
-
       if (!this.parsedData.length) {
         this.importJSON({});
       }

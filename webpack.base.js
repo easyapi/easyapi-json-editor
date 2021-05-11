@@ -54,10 +54,10 @@ config.module = {
       }
     }
   ]
-}
+};
 
 config.plugins = [
   new VueLoaderPlugin(),
-]
+];
 
 module.exports = config;
