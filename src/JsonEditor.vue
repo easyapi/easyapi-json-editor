@@ -37,9 +37,9 @@
     created() {
       this.lastParsedData = {};
       this.parsedData = this.objData;
-      if (!this.parsedData.length) {
-        this.importJSON({});
-      }
+      console.log('this.parsedData',  this.parsedData);
+
+      this.importJSON(this.parsedData || {});
     },
     watch: {
       objData: {
