@@ -205,6 +205,9 @@
       },
 
       importJSON: function (json) {
+        //如果入参根类型为数组，定义JSON根类型为数组
+        //如果入参根类型为对象，定义JSON根类型为对象
+
         this.parsedData = this.jsonParse(json);
       }
     }

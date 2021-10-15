@@ -1,6 +1,6 @@
 <template>
   <div class="block_content">
-    <draggable v-model="flowData" handle=".dragbar" @end="onDragEnd">
+    <draggable v-model="parsedData" handle=".dragbar" @end="onDragEnd">
       <div
         v-for="(item, index) in flowData"
         :key="`${item.type}${index}`"
