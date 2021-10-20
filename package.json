@@ -21,7 +21,7 @@
   },
   "license": "Apache 2",
   "scripts": {
-    "dev": "webpack-dev-server --open --config webpack.config.js",
+    "dev": "webpack-dev-server --open --host 0.0.0.0 --config webpack.config.js",
     "example": "rm -rf ./example/dist/*.js && rm -rf ./example/dist/*.html && webpack --progress --config webpack.config.js",
     "build": "webpack --progress --config webpack.build.js"
   },
