@@ -1,17 +1,23 @@
 <template>
-  <div class="ea-json-editor">
-    <json-view :parsedData="parsedData" v-model="parsedData"></json-view>
+  <div class="ea-json-editor">  
+    <select v-model="rootType" @change="rootTypeChange" :disabled="!!parsedData.length" style="margin-bottom: 8px">
+      <option value="array">Array</option>
+      <option value="object">Object</option>
+    </select>
+    <json-view v-if="rootType === 'object'" :parsedData="parsedData" v-model="parsedData" />
+    <array-view v-if="rootType === 'array'" :parsedData="parsedData" v-model="parsedData" />
   </div>
 </template>
 
 <script>
   import JsonView from "./JsonView.vue";
+  import ArrayView from './ArrayView.vue';
 
   export default {
     name: "JsonEditor",
     props: {
       objData: {
-        type: Object,
+        type: Object | Array,
         required: true
       },
       options: {
@@ -31,11 +37,11 @@
     },
     data() {
       return {
-        parsedData: []
+        parsedData: [],
+        rootType: 'object'
       };
     },
     created() {
-      this.lastParsedData = {};
       this.parsedData = this.objData;
       console.log('this.parsedData',  this.parsedData);
 
@@ -44,24 +50,25 @@
     watch: {
       objData: {
         handler(newValue, oldValue) {
-          this.parsedData = this.jsonParse(this.objData)
+          this.parsedData = this.jsonParse(this.objData);
         },
       },
       parsedData: {
         handler(newValue, oldValue) {
-          if (JSON.stringify(newValue) === JSON.stringify(this.lastParsedData)) {
-            return;
-          }
-          this.lastParsedData = newValue;
+          console.log('newVal', this.parsedData);
           this.$emit("input", this.parsedData);
         },
         deep: true
       }
     },
     components: {
-      "json-view": JsonView
+      "json-view": JsonView,
+      'array-view': ArrayView
     },
     methods: {
+      rootTypeChange: function(e) {
+        console.log(e);
+      },
       jsonParse: function (jsonStr) {
         const parseJson = json => {
           let result = [];
@@ -126,10 +133,19 @@
 
         // --
         const parseBody = json => {
-          return parseJson(json);
+          const type = Object.prototype.toString.call(json);
+          if(type === '[object Array]') {
+            this.rootType = 'array';
+            return parseArray(json);
+          }
+          if(type === '[object Object]') {
+            this.rootType = 'object';
+            return parseJson(json)
+          }
         };
 
-        return parseBody(jsonStr);
+        const result = parseBody(jsonStr);
+        return result;
       },
 
       getType: function (obj) {
@@ -152,7 +168,7 @@
       },
 
       makeJson: function (dataArr) {
-        const revertWithObj = function (data) {
+        const revertWithObj = (data) => {
           let r = {};
           for (let i = 0; i < data.length; ++i) {
             let el = data[i];
@@ -171,7 +187,7 @@
           return r;
         };
 
-        const revertWithArray = function (data) {
+        const revertWithArray = (data) => {
           let arr = [];
           for (let i = 0; i < data.length; ++i) {
             let el = data[i];
@@ -189,8 +205,12 @@
           return arr;
         };
 
-        const revertMain = function (data) {
-          return revertWithObj(data);
+        const revertMain = (data) => {
+          if(this.rootType === 'array') {
+            return revertWithArray(data);
+          } else if(this.rootType === 'object') {
+            return revertWithObj(data);
+          }
         };
 
         return revertMain(dataArr);
