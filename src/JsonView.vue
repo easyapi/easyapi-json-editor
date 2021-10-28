@@ -1,6 +1,6 @@
 <template>
   <div class="block_content">
-    <draggable v-model="parsedData" handle=".dragbar" @end="onDragEnd">
+    <draggable v-model="flowData" handle=".dragbar" @end="onDragEnd">
       <div
         v-for="(item, index) in flowData"
         :key="`${item.type}${index}`"
@@ -31,11 +31,15 @@
         </span>
         <span class="json-val">
           <template v-if="item.type === 'object'">
-            <json-view :parsedData="item.childs" v-model="item.childs"></json-view>
+            <!-- <json-view :parsedData="item.childs" v-model="item.childs"></json-view> -->
+            <json-view v-model="item.childs"></json-view>
+
           </template>
 
           <template v-else-if="item.type === 'array'">
-            <array-view :parsedData="item.childs" v-model="item.childs"></array-view>
+            <!-- <array-view :parsedData="item.childs" v-model="item.childs"></array-view> -->
+            <array-view v-model="item.childs"></array-view>
+
           </template>
 
           <template v-else>
@@ -72,7 +76,7 @@
             <option v-for="(type, index) in formats" :value="type" :key="index">{{type}}</option>
           </select>
           <i class="dragbar v-json-edit-icon-drag"></i>
-          <i class="del-btn" @click="delItem(parsedData, item, index)">
+          <i class="del-btn" @click="delItem(value, item, index)">
             <i class="v-json-edit-icon-huishouzhan_huaban"></i>
           </i>
         </div>
@@ -93,23 +97,27 @@
   export default {
     name: "JsonView",
     props: {
-      parsedData: {}
+      // parsedData: {}
+      value: {}
+
     },
     data() {
       return {
         formats: ["string", "array", "object", "number", "boolean"],
-        flowData: this.parsedData,
+        flowData: [],
         toAddItem: false,
         hideMyBlock: {}
       };
     },
     created() {
-      this.flowData = this.parsedData || {};
+      this.flowData = this.value || {};
+      console.log('this.flowData',  this.flowData);
+
     },
     watch: {
-      parsedData: {
+      value: {
         handler(newValue, oldValue) {
-          this.flowData = this.parsedData;
+          this.flowData = this.value;
         }
       }
     },

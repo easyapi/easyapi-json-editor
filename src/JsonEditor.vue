@@ -1,23 +1,18 @@
 <template>
-  <div class="ea-json-editor">  
-    <select v-model="rootType" @change="rootTypeChange" :disabled="!!parsedData.length" style="margin-bottom: 8px">
-      <option value="array">Array</option>
-      <option value="object">Object</option>
-    </select>
-    <json-view v-if="rootType === 'object'" :parsedData="parsedData" v-model="parsedData" />
-    <array-view v-if="rootType === 'array'" :parsedData="parsedData" v-model="parsedData" />
+  <div class="ea-json-editor">
+    <!-- <json-view :parsedData="parsedData" v-model="parsedData"></json-view> -->
+    <json-view v-model="parsedData"></json-view>
+
   </div>
 </template>
 
 <script>
   import JsonView from "./JsonView.vue";
-  import ArrayView from './ArrayView.vue';
 
   export default {
     name: "JsonEditor",
     props: {
-      objData: {
-        type: Object | Array,
+      value: {
         required: true
       },
       options: {
@@ -37,38 +32,38 @@
     },
     data() {
       return {
-        parsedData: [],
-        rootType: 'object'
+        parsedData: []
       };
     },
     created() {
-      this.parsedData = this.objData;
+      this.lastParsedData = {};
+      this.parsedData = this.value;
       console.log('this.parsedData',  this.parsedData);
 
-      this.importJSON(this.parsedData || {});
+      // this.importJSON(this.parsedData || {});
     },
     watch: {
-      objData: {
+      value: {
         handler(newValue, oldValue) {
-          this.parsedData = this.jsonParse(this.objData);
+          // this.parsedData = this.jsonParse(this.objData)
+          this.parsedData = this.value;
         },
       },
       parsedData: {
         handler(newValue, oldValue) {
-          console.log('newVal', this.parsedData);
+          // if (JSON.stringify(newValue) === JSON.stringify(this.lastParsedData)) {
+          //   return;
+          // }
+          // this.lastParsedData = newValue;
           this.$emit("input", this.parsedData);
         },
         deep: true
       }
     },
     components: {
-      "json-view": JsonView,
-      'array-view': ArrayView
+      "json-view": JsonView
     },
     methods: {
-      rootTypeChange: function(e) {
-        console.log(e);
-      },
       jsonParse: function (jsonStr) {
         const parseJson = json => {
           let result = [];
@@ -133,19 +128,10 @@
 
         // --
         const parseBody = json => {
-          const type = Object.prototype.toString.call(json);
-          if(type === '[object Array]') {
-            this.rootType = 'array';
-            return parseArray(json);
-          }
-          if(type === '[object Object]') {
-            this.rootType = 'object';
-            return parseJson(json)
-          }
+          return parseJson(json);
         };
 
-        const result = parseBody(jsonStr);
-        return result;
+        return parseBody(jsonStr);
       },
 
       getType: function (obj) {
@@ -168,7 +154,7 @@
       },
 
       makeJson: function (dataArr) {
-        const revertWithObj = (data) => {
+        const revertWithObj = function (data) {
           let r = {};
           for (let i = 0; i < data.length; ++i) {
             let el = data[i];
@@ -187,7 +173,7 @@
           return r;
         };
 
-        const revertWithArray = (data) => {
+        const revertWithArray = function (data) {
           let arr = [];
           for (let i = 0; i < data.length; ++i) {
             let el = data[i];
@@ -205,12 +191,8 @@
           return arr;
         };
 
-        const revertMain = (data) => {
-          if(this.rootType === 'array') {
-            return revertWithArray(data);
-          } else if(this.rootType === 'object') {
-            return revertWithObj(data);
-          }
+        const revertMain = function (data) {
+          return revertWithObj(data);
         };
 
         return revertMain(dataArr);
@@ -225,9 +207,6 @@
       },
 
       importJSON: function (json) {
-        //如果入参根类型为数组，定义JSON根类型为数组
-        //如果入参根类型为对象，定义JSON根类型为对象
-
         this.parsedData = this.jsonParse(json);
       }
     }
