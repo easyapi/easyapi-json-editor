@@ -10,14 +10,14 @@
           <p v-if="member.type !== 'object' && member.type !== 'array'">
             <input
               type="text"
-              v-model="member.sample"
+              v-model="member.demo"
               class="val-input"
               v-if="member.type === 'string'"
               placeholder="string"
             />
             <input
               type="number"
-              v-model.number="member.sample"
+              v-model.number="member.demo"
               class="val-input"
               v-if="member.type == 'number'"
               placeholder="number"
@@ -25,7 +25,7 @@
             />
             <select
               name="value"
-              v-model="member.sample"
+              v-model="member.demo"
               class="val-input"
               v-if="member.type == 'boolean'"
             >
@@ -130,14 +130,14 @@
           name: obj.key,
           type: obj.type,
           description: "",
-          sample: ""
+          demo: ""
         };
         if (obj.type === "array" || obj.type === "object") {
           oj.childs = obj.val;
-          oj.sample = null;
+          oj.demo = null;
         } else {
           oj.childs = null;
-          oj.sample = obj.val;
+          oj.demo = obj.val;
         }
 
         this.flowData.push(oj);
@@ -152,24 +152,24 @@
       itemTypeChange: function (item) {
         if (item.type === "array" || item.type === "object") {
           item.childs = [];
-          item.sample = null;
+          item.demo = null;
         }
         if (item.type === "boolean") {
           item.childs = null;
-          item.sample = true;
+          item.demo = true;
         }
         if (item.type === "string") {
           item.childs = null;
-          item.sample = "";
+          item.demo = "";
         }
         if (item.type === "number") {
           item.childs = null;
-          item.sample = 0;
+          item.demo = 0;
         }
       },
 
       numberInputChange: function (item) {
-        if (!item.sample) item.sample = 0;
+        if (!item.demo) item.demo = 0;
       }
     }
   };

@@ -85,10 +85,10 @@
 
             if (opt.type === "array" || opt.type === "object") {
               opt.childs = parsedVal;
-              opt.sample = null;
+              opt.demo = null;
             } else {
               opt.childs = null;
-              opt.sample = parsedVal;
+              opt.demo = parsedVal;
             }
 
             result.push(opt);
@@ -115,10 +115,10 @@
 
             if (opt.type === "array" || opt.type === "object") {
               opt.childs = parsedVal;
-              opt.sample = null;
+              opt.demo = null;
             } else {
               opt.childs = null;
-              opt.sample = parsedVal;
+              opt.demo = parsedVal;
             }
 
             result.push(opt);
@@ -165,7 +165,7 @@
             } else if (el.type === "object") {
               val = revertWithObj(el.childs);
             } else {
-              val = el.sample;
+              val = el.demo;
             }
 
             r[key] = val;
@@ -183,7 +183,7 @@
             } else if (el.type === "object") {
               r = revertWithObj(el.childs);
             } else {
-              r = el.sample;
+              r = el.demo;
             }
 
             arr.push(r);

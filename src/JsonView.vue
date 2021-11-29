@@ -46,20 +46,20 @@
             <span class="val">
               <input
                 type="text"
-                v-model="item.sample"
+                v-model="item.demo"
                 class="val-input"
                 v-if="item.type === 'string'"
               />
               <input
                 type="number"
-                v-model.number="item.sample"
+                v-model.number="item.demo"
                 class="val-input"
                 v-if="item.type === 'number'"
                 @input="numberInputChange(member)"
               />
               <select
                 name="value"
-                v-model="item.sample"
+                v-model="item.demo"
                 class="val-input"
                 v-if="item.type === 'boolean'"
               >
@@ -153,14 +153,14 @@
           name: obj.key,
           type: obj.type,
           description: "",
-          sample: ""
+          demo: ""
         };
         if (obj.type === "array" || obj.type === "object") {
           oj.childs = obj.val;
-          oj.sample = null;
+          oj.demo = null;
         } else {
           oj.childs = null;
-          oj.sample = obj.val;
+          oj.demo = obj.val;
         }
 
         if (!oj.name) {
@@ -187,24 +187,24 @@
       itemTypeChange: function (item) {
         if (item.type === "array" || item.type === "object") {
           item.childs = [];
-          item.sample = null;
+          item.demo = null;
         }
         if (item.type === "boolean") {
           item.childs = null;
-          item.sample = true;
+          item.demo = true;
         }
         if (item.type === "string") {
           item.childs = null;
-          item.sample = "";
+          item.demo = "";
         }
         if (item.type === "number") {
           item.childs = null;
-          item.sample = 0;
+          item.demo = 0;
         }
       },
 
       numberInputChange: function (item) {
-        if (!item.sample) item.sample = 0;
+        if (!item.demo) item.demo = 0;
       }
     }
   };

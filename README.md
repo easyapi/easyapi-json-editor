@@ -27,14 +27,14 @@ EasyAPI JSON 编辑器组件，参考市面上标准的 JSON 编辑器风格，�
   "name": "blog",
   "type": "object",
   "description": "博客",
-  "sample": "",
+  "demo": "",
   "sequence": 1,
   "childs": [
     {
       "name": "title",
       "type": "string",
       "description": "标题",
-      "sample": "我和我的祖国",
+      "demo": "我和我的祖国",
       "sequence": 1
     }
   ]
@@ -76,7 +76,7 @@ export default {
           type: "object",
           description: "博客",
           required: false,
-          sample: "",
+          demo: "",
           demo: "",
           sequence: 1,
           childs: [
@@ -86,7 +86,7 @@ export default {
               type: "string",
               description: "标题",
               required: true,
-              sample: "我和我的祖国",
+              demo: "我和我的祖国",
               demo: "",
               sequence: 1,
               childs: [
@@ -96,7 +96,7 @@ export default {
                   type: "string",
                   description: "标题",
                   required: true,
-                  sample: "我和我的祖国",
+                  demo: "我和我的祖国",
                   demo: "",
                   sequence: 1,
                   childs: []
@@ -111,7 +111,7 @@ export default {
           type: "string",
           description: "标题",
           required: true,
-          sample: "我和我的祖国",
+          demo: "我和我的祖国",
           demo: "",
           sequence: 1,
           childs: []
@@ -144,14 +144,14 @@ export default {
         name: "",
         type: "object",
         description: "博客",
-        sample: "",
+        demo: "",
         sequence: 1,
         childs: [
           {
             name: "title",
             type: "string",
             description: "标题",
-            sample: "我和我的祖国",
+            demo: "我和我的祖国",
             sequence: 1
           }
         ]

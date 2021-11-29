@@ -45,14 +45,29 @@
           name: "中国",
           type: "object",
           description: "博客",
-          sample: "",
+          demo: "",
           sequence: 1,
           childs: [
             {
               name: "title",
               type: "string",
               description: "标题",
-              sample: "我和我的祖国",
+              demo: "我和我的祖国",
+              sequence: 1
+            }
+          ]
+        },{
+          name: "中国1",
+          type: "object",
+          description: "博客",
+          demo: "",
+          sequence: 1,
+          childs: [
+            {
+              name: "title",
+              type: "string",
+              description: "标题",
+              demo: "我和我的祖国",
               sequence: 1
             }
           ]
