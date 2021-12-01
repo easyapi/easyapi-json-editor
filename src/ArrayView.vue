@@ -56,7 +56,7 @@
 
               <template v-if="member.type == 'object'">
                 <!-- <json-view :parsedData="member.childs || {}" v-model="member.childs"></json-view> -->
-                <json-view v-model="member.childs"></json-view>
+                <json-view :ifRoot="false" v-model="member.childs"></json-view>
 
               </template>
             </span>

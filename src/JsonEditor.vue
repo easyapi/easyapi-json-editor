@@ -1,7 +1,7 @@
 <template>
   <div class="ea-json-editor">
     <!-- <json-view :parsedData="parsedData" v-model="parsedData"></json-view> -->
-    <json-view v-model="parsedData"></json-view>
+    <json-view :ifRoot="true" v-model="parsedData"></json-view>
   </div>
 </template>
 
@@ -36,9 +36,19 @@ export default {
   },
   created() {
     this.lastParsedData = {};
+    if (!this.value || this.value.length <= 0) {
+      this.parsedData = [
+        {
+          name: "根节点",
+          type: "object",
+          description: "",
+          demo: "",
+          childs: [],
+        },
+      ];
+      return;
+    }
     this.parsedData = this.value;
-    console.log("this.parsedData", this.parsedData);
-
     // this.importJSON(this.parsedData || {});
   },
   watch: {
@@ -221,7 +231,7 @@ export default {
         json = [json[0]];
       } //加上根节点
       let newData = {
-        根节点: json
+        根节点: json,
       };
       this.parsedData = this.jsonParse(newData);
     },
