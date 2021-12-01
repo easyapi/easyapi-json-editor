@@ -49,11 +49,15 @@
 
             <span class="json-val">
               <template v-if="member.type == 'array'">
-                <array-view :parsedData="member.childs || []" v-model="member.childs"></array-view>
+                <!-- <array-view :parsedData="member.childs || []" v-model="member.childs"></array-view> -->
+                <array-view v-model="member.childs"></array-view>
+
               </template>
 
               <template v-if="member.type == 'object'">
-                <json-view :parsedData="member.childs || {}" v-model="member.childs"></json-view>
+                <!-- <json-view :parsedData="member.childs || {}" v-model="member.childs"></json-view> -->
+                <json-view v-model="member.childs"></json-view>
+
               </template>
             </span>
           </div>
@@ -63,7 +67,7 @@
               <option v-for="(item, index) in formats" :value="item" :key="index">{{item}}</option>
             </select>
             <i class="dragbar v-json-edit-icon-drag"></i>
-            <i class="del-btn" @click="delItem(parsedData, member, index)">
+            <i class="del-btn" @click="delItem(value, member, index)">
               <i class="v-json-edit-icon-huishouzhan_huaban"></i>
             </i>
           </div>
@@ -84,19 +88,21 @@
 
   export default {
     name: "ArrayView",
-    props: ["parsedData"],
+    // props: ["parsedData"],
+    props: ["value"],
+
     data: function () {
       return {
         formats: ["string", "array", "object", "number", "boolean"],
-        flowData: this.parsedData,
+        flowData: this.value,
         toAddItem: false,
         hideMyItem: {}
       };
     },
     watch: {
-      parsedData: {
+      value: {
         handler(newValue, oldValue) {
-          this.flowData = this.parsedData || [];
+          this.flowData = this.value || [];
         }
       }
     },
@@ -130,7 +136,8 @@
           name: obj.key,
           type: obj.type,
           description: "",
-          demo: ""
+          demo: "",
+          ifRoot: false
         };
         if (obj.type === "array" || obj.type === "object") {
           oj.childs = obj.val;

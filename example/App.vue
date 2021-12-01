@@ -42,33 +42,18 @@
       return {
         
         newJsonData: [{
-          name: "中国",
+          name: "根节点",
           type: "object",
           description: "博客",
           demo: "",
-          sequence: 1,
+          ifRoot: true,
           childs: [
             {
               name: "title",
               type: "string",
               description: "标题",
               demo: "我和我的祖国",
-              sequence: 1
-            }
-          ]
-        },{
-          name: "中国1",
-          type: "object",
-          description: "博客",
-          demo: "",
-          sequence: 1,
-          childs: [
-            {
-              name: "title",
-              type: "string",
-              description: "标题",
-              demo: "我和我的祖国",
-              sequence: 1
+              ifRoot: false
             }
           ]
         }]
@@ -177,14 +162,15 @@
       },
 
       importJSON: function () {
-        this.$refs.jsonEditor.importJSON({
+        this.$refs.jsonEditor.importJSON(
+          [{
           aaa: 123,
           bbb: {
             ccc: 32,
             ddd: 45,
             fff: [123, 4556, 67]
           }
-        });
+        }]);
       }
     },
     mounted: function () {

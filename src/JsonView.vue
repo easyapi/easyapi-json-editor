@@ -75,8 +75,8 @@
           <select v-model="item.type" class="tools-types" @change="itemTypeChange(item)">
             <option v-for="(type, index) in formats" :value="type" :key="index">{{type}}</option>
           </select>
-          <i class="dragbar v-json-edit-icon-drag"></i>
-          <i class="del-btn" @click="delItem(value, item, index)">
+          <i class="dragbar v-json-edit-icon-drag" v-if="!item.ifRoot"></i>
+          <i class="del-btn" @click="delItem(value, item, index)" v-if="!item.ifRoot">
             <i class="v-json-edit-icon-huishouzhan_huaban"></i>
           </i>
         </div>
@@ -85,7 +85,8 @@
 
     <item-add-form v-if="toAddItem" @confirm="newItem" @cancel="cancelNewItem"></item-add-form>
 
-    <div class="block add-key" @click="addItem" v-if="!toAddItem">
+    <div class="block add-key" @click="addItem" v-if="!toAddItem && !flowData[0].ifRoot">
+    <!-- <div class="block add-key" @click="addItem" v-if="flowData[0].ifRoot"> -->
       <i class="v-json-edit-icon-add"></i>
     </div>
   </div>
@@ -104,15 +105,13 @@
     data() {
       return {
         formats: ["string", "array", "object", "number", "boolean"],
-        flowData: [],
+        flowData: this.value,
         toAddItem: false,
         hideMyBlock: {}
       };
     },
     created() {
       this.flowData = this.value || {};
-      console.log('this.flowData',  this.flowData);
-
     },
     watch: {
       value: {
@@ -153,7 +152,8 @@
           name: obj.key,
           type: obj.type,
           description: "",
-          demo: ""
+          demo: "",
+          ifRoot: false
         };
         if (obj.type === "array" || obj.type === "object") {
           oj.childs = obj.val;

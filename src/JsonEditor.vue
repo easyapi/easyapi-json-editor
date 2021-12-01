@@ -197,9 +197,13 @@ export default {
       };
 
       const revertMain = function (data) {
+        if (data[0].type === "array") {
+          return revertWithArray(data[0].childs);
+        } else if (data[0].type === "object") {
+          return revertWithObj(data[0].childs);
+        }
         return revertWithObj(data);
       };
-
       return revertMain(dataArr);
     },
 
@@ -212,7 +216,14 @@ export default {
     },
 
     importJSON: function (json) {
-      this.parsedData = this.jsonParse(json);
+      //如果是数组，只显示第一个
+      if (json.constructor === Array) {
+        json = [json[0]];
+      } //加上根节点
+      let newData = {
+        根节点: json
+      };
+      this.parsedData = this.jsonParse(newData);
     },
   },
 };
