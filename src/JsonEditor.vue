@@ -87,7 +87,7 @@ export default {
           if (this.getType(val) === "object") {
             parsedVal = parseJson(val);
           } else if (this.getType(val) === "array") {
-            parsedVal = parseArray(val);
+            parsedVal = parseArray([val[0]]);
           }
 
           let opt = {
@@ -117,7 +117,7 @@ export default {
           if (this.getType(val) === "object") {
             parsedVal = parseJson(val);
           } else if (this.getType(val) === "array") {
-            parsedVal = parseArray(val);
+            parsedVal = parseArray([val[0]]);
           }
 
           let opt = {
@@ -229,7 +229,8 @@ export default {
       //如果是数组，只显示第一个
       if (json.constructor === Array) {
         json = [json[0]];
-      } //加上根节点
+      }
+      //加上根节点
       let newData = {
         根节点: json,
       };

@@ -1,6 +1,6 @@
 {
   "name": "easyapi-json-editor",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "EasyAPI JSON 编辑器",
   "author": "EasyAPI",
   "keywords": [
@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/easyapi/easyapi-json-editor/issues"
   },
-  "license": "Apache 2",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.config.js",
     "example": "rm -rf ./example/dist/*.js && rm -rf ./example/dist/*.html && webpack --progress --config webpack.config.js",
@@ -68,5 +68,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "directories": {
+    "example": "example"
+  }
 }

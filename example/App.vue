@@ -41,22 +41,21 @@
     data: function () {
       return {
         
-        newJsonData: [{
-          name: "根节点",
-          type: "object",
-          description: "博客",
-          demo: "",
-          ifRoot: true,
-          childs: [
-            {
-              name: "title",
-              type: "string",
-              description: "标题",
-              demo: "我和我的祖国",
-              ifRoot: false
-            }
-          ]
-        }]
+        // newJsonData: [{
+        //   name: "根节点",
+        //   type: "object",
+        //   description: "博客",
+        //   demo: "",
+        //   childs: [
+        //     {
+        //       name: "title",
+        //       type: "string",
+        //       description: "标题",
+        //       demo: "我和我的祖国"
+        //     }
+        //   ]
+        // }]
+        newJsonData: null
       };
     },
     watch: {

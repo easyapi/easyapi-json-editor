@@ -7,7 +7,7 @@
           :key="`${member.type}${index}`"
           :class="['array-item', {'hide-item': hideMyItem[index] == true}]"
         >
-          <p v-if="member.type !== 'object' && member.type !== 'array'">
+          <!-- <p v-if="member.type !== 'object' && member.type !== 'array'">
             <input
               type="text"
               v-model="member.demo"
@@ -33,9 +33,9 @@
               <option :value="false">false</option>
             </select>
             <input type="text" v-model="member.description" class="des-input" placeholder="注释"/>
-          </p>
+          </p> -->
 
-          <div v-else>
+          <!-- <div v-else> -->
             <span :class="['json-key', 'json-desc']">
               {{member.type.toUpperCase()}}
               <i
@@ -47,6 +47,8 @@
               <i v-if="member.type == 'array'">{{'[' + member.childs.length + ']'}}</i>
             </span>
 
+            <input type="text" v-model="member.description" class="des-input" placeholder="注释"/>
+            
             <span class="json-val">
               <template v-if="member.type == 'array'">
                 <!-- <array-view :parsedData="member.childs || []" v-model="member.childs"></array-view> -->
@@ -60,7 +62,7 @@
 
               </template>
             </span>
-          </div>
+          <!-- </div> -->
 
           <div class="tools">
             <select v-model="member.type" class="tools-types" @change="itemTypeChange(member)">
@@ -77,7 +79,7 @@
 
     <item-add-form v-if="toAddItem" @confirm="newItem" @cancel="cancelNewItem" :needName="false"></item-add-form>
 
-    <div class="block add-key" v-if="!toAddItem" @click="addItem">
+    <div class="block add-key" v-if="!toAddItem && flowData.length == 0" @click="addItem">
       <i class="v-json-edit-icon-add"></i>
     </div>
   </div>

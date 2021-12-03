@@ -110,7 +110,7 @@
       @cancel="cancelNewItem"
     ></item-add-form>
 
-    <div class="block add-key" @click="addItem" v-if="!toAddItem && !ifRoot">
+    <div class="block add-key" @click="addItem" v-if="(!toAddItem && !ifRoot)">
       <!-- <div class="block add-key" @click="addItem" v-if="flowData[0].ifRoot"> -->
       <i class="v-json-edit-icon-add"></i>
     </div>
@@ -139,6 +139,7 @@ export default {
     };
   },
   created() {
+    
     // if (this.ifRoot) {
     //   //如果是根节点，但是没有初始值的话，要给一个根节点初始值
     //   if (!this.value || this.value.length <= 0) {
@@ -155,11 +156,13 @@ export default {
     //   }
     // }
     this.flowData = this.value || {};
+    console.log("created---->",this.flowData);
   },
   watch: {
     value: {
       handler(newValue, oldValue) {
         this.flowData = this.value;
+        console.log("watch---->",this.flowData);
       },
     },
   },
