@@ -222,6 +222,9 @@ export default {
     },
 
     exportJSON: function () {
+      console.log("---1>",this.parsedData);
+      console.log("---2>",this.makeJson(this.parsedData));
+
       return this.makeJson(this.parsedData);
     },
 
