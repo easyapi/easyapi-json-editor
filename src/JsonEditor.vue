@@ -154,6 +154,8 @@ export default {
         case "[object Object]":
           return "object";
           break;
+        case "[object Number]":
+          return obj % 1 === 0 ? "int" : "double";
         case "[object Null]":
         case "[object Function]":
         case "[object Undefined]":
