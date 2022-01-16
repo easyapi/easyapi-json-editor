@@ -15,14 +15,14 @@
           v-model="valName"
           class="f-input-m"
           placeholder="value"
-          v-if="formatSelected === 'string'"
+          v-if="formatSelected === 'string' || formatSelected === 'date' || formatSelected === 'datetime'"
         />
         <input
           type="number"
           v-model="valName"
           class="f-input-m"
           placeholder="value"
-          v-if="formatSelected === 'number'"
+          v-if="formatSelected === 'int' || formatSelected === 'byte' || formatSelected === 'short' || formatSelected === 'long' || formatSelected === 'float' || formatSelected === 'double'"
           @change="dealNumber"
         />
         <select
@@ -50,7 +50,10 @@
     name: "ItemAddForm",
     data() {
       return {
-        formats: ["string", "array", "object", "number", "boolean"],
+        // formats: ["string", "array", "object", "number", "boolean"],
+        formats: ["string", "array", "object", "double", "int", "byte", "short","long","float","date","datetime", "boolean"],
+
+
         formatSelected: "string",
         //--
         keyName: "",

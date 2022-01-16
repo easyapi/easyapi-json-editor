@@ -132,7 +132,9 @@ export default {
   },
   data() {
     return {
-      formats: ["string", "array", "object", "number", "boolean"],
+      // formats: ["string", "array", "object", "number", "boolean"],
+      formats: ["string", "array", "object", "double", "int", "byte", "short","long","float","date","datetime", "boolean"],
+
       flowData: this.value,
       toAddItem: false,
       hideMyBlock: {},
