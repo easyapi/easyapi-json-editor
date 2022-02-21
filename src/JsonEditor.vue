@@ -32,6 +32,7 @@ export default {
   data() {
     return {
       parsedData: [],
+      renderDataRows: []
     };
   },
   created() {
@@ -93,6 +94,7 @@ export default {
           let opt = {
             name: k,
             type: this.getType(val),
+            description: this.renderDataRows.filter(x => x.name == k).length > 0 ? this.renderDataRows.filter(x => x.name == k)[0].description : ""
           };
 
           if (opt.type === "array" || opt.type === "object") {
@@ -121,8 +123,10 @@ export default {
           }
 
           let opt = {
-            name: null,
+            // name: null,
+            name: val,
             type: this.getType(val),
+            description: this.renderDataRows.filter(x => x.name == val).length > 0 ? this.renderDataRows.filter(x => x.name == val)[0].description : ""
           };
 
           if (opt.type === "array" || opt.type === "object") {
@@ -144,6 +148,22 @@ export default {
       };
 
       return parseBody(jsonStr);
+    },
+
+    //将树状图平铺
+    treeToTile() {
+      this.renderDataRows = [];
+      const expanded = (data) => {
+        if (data && data.length > 0) {
+          data
+            .filter((d) => d)
+            .forEach((e) => {
+              this.renderDataRows.push(e);
+              expanded(e["childs"]);
+            });
+        }
+      };
+      expanded(this.parsedData);
     },
 
     getType: function (obj) {
@@ -224,9 +244,6 @@ export default {
     },
 
     exportJSON: function () {
-      console.log("---1>",this.parsedData);
-      console.log("---2>",this.makeJson(this.parsedData));
-
       return this.makeJson(this.parsedData);
     },
 
@@ -239,6 +256,7 @@ export default {
       let newData = {
         根节点: json,
       };
+      this.treeToTile();
       this.parsedData = this.jsonParse(newData);
     },
   },
